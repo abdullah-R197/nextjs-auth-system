@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -35,7 +35,7 @@ export default function DashboardPage() {
   }
 
   const handleSignOut = async () => {
-    await router.push("/");
+    await signOut({ callbackUrl: "/" });
   };
 
   return (

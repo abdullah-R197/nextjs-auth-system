@@ -62,5 +62,5 @@ export const authOptions: NextAuthOptions = {
     signIn: '/login',
     signUp: '/register'
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || 'fallback-secret-key-for-development',
 };
