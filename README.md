@@ -1,27 +1,87 @@
-# Authentication Web Application
+# Next.js Authentication System
 
 A complete full-stack web application for user authentication built with Next.js 15, TypeScript, Prisma, and NextAuth.js.
 
 ## Features
 
-- **User Registration**: Sign up with email and password
-- **User Login**: Secure login with credentials
-- **Session Management**: JWT-based authentication with NextAuth.js
-- **Dashboard**: User profile page with greeting and account information
-- **Form Validation**: Client-side validation with Zod and React Hook Form
-- **Responsive Design**: Mobile-friendly UI with shadcn/ui components
-- **Security**: Password hashing with bcryptjs
-- **Database**: SQLite with Prisma ORM
+### 🔐 Authentication
+- User registration and login
+- Secure password hashing with bcryptjs
+- JWT-based session management
+- Protected routes with automatic redirects
+- Form validation with Zod and react-hook-form
+
+### 🎨 User Interface
+- Modern, responsive design with Tailwind CSS
+- Beautiful UI components with shadcn/ui
+- Loading states and error handling
+- User dashboard with profile information
+- Mobile-friendly design
+
+### 🛡️ Security
+- Input validation and sanitization
+- Secure password storage
+- JWT token authentication
+- CSRF protection
+- Environment variable configuration
+
+### 🗄️ Database
+- SQLite database with Prisma ORM
+- User model with email and password fields
+- Database migrations and schema management
 
 ## Tech Stack
 
-- **Frontend**: Next.js 15 with App Router, TypeScript, React 19
-- **Styling**: Tailwind CSS 4, shadcn/ui components
-- **Authentication**: NextAuth.js v4
-- **Database**: SQLite with Prisma ORM
-- **Form Handling**: React Hook Form with Zod validation
-- **Password Hashing**: bcryptjs
-- **State Management**: Zustand, TanStack Query
+- **Frontend:** Next.js 15, TypeScript, React, Tailwind CSS, shadcn/ui
+- **Backend:** Next.js API Routes, NextAuth.js
+- **Database:** SQLite, Prisma ORM
+- **Authentication:** NextAuth.js, JWT, bcryptjs
+- **Validation:** Zod, react-hook-form
+- **Styling:** Tailwind CSS, shadcn/ui components
+
+## Getting Started
+
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd nextjs-auth-system
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   Create a `.env.local` file in the root directory:
+   ```env
+   DATABASE_URL="file:./dev.db"
+   NEXTAUTH_SECRET="your-super-secret-jwt-key-here"
+   NEXTAUTH_URL="http://localhost:3000"
+   ```
+
+4. **Set up the database**
+   ```bash
+   # Generate Prisma client
+   npx prisma generate
+   
+   # Push database schema
+   npx prisma db push
+   ```
+
+5. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+
+6. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## Project Structure
 
@@ -30,187 +90,141 @@ src/
 ├── app/
 │   ├── api/
 │   │   └── auth/
-│   │       ├── login/
-│   │       │   └── route.ts
 │   │       ├── register/
-│   │       │   └── route.ts
+│   │       │   └── route.ts          # Registration API
+│   │       ├── login/
+│   │       │   └── route.ts          # Login API
 │   │       └── [...nextauth]/
-│   │           └── route.ts
+│   │           └── route.ts          # NextAuth configuration
 │   ├── dashboard/
-│   │   └── page.tsx
+│   │   └── page.tsx                 # Protected dashboard page
 │   ├── login/
-│   │   └── page.tsx
+│   │   └── page.tsx                 # Login page
 │   ├── register/
-│   │   └── page.tsx
-│   ├── layout.tsx
-│   ├── page.tsx
-│   └── globals.css
+│   │   └── page.tsx                 # Registration page
+│   ├── layout.tsx                   # Root layout
+│   └── page.tsx                     # Home page
 ├── components/
-│   ├── ui/ (shadcn/ui components)
-│   └── providers.tsx
-├── hooks/
-│   ├── use-toast.ts
-│   └── use-mobile.ts
-└── lib/
-    ├── auth.ts
-    ├── db.ts
-    ├── socket.ts
-    └── utils.ts
+│   ├── providers.tsx                # Session provider
+│   └── ui/                         # shadcn/ui components
+├── lib/
+│   ├── auth.ts                     # NextAuth configuration
+│   ├── db.ts                       # Prisma database client
+│   └── utils.ts                    # Utility functions
+└── hooks/
+    └── use-toast.ts                # Toast hook
 ```
 
-## Setup Instructions
+## API Endpoints
 
-### Prerequisites
+### Authentication
+- `POST /api/auth/register` - Register a new user
+- `POST /api/auth/login` - Login with credentials
+- `GET /api/auth/session` - Get current session
+- `POST /api/auth/signin` - NextAuth sign-in
+- `POST /api/auth/signout` - NextAuth sign-out
 
-- Node.js 18+ 
-- npm or yarn
+### Pages
+- `/` - Home page with login/register options
+- `/register` - User registration form
+- `/login` - User login form
+- `/dashboard` - Protected user dashboard
 
-### Installation
+## Usage
 
-1. **Clone the repository** (if applicable):
-   ```bash
-   git clone <repository-url>
-   cd <project-name>
-   ```
+### Registering a New User
+1. Navigate to the home page
+2. Click "Create Account"
+3. Fill in your email and password
+4. Confirm your password
+5. Submit the form
+6. You'll be redirected to the login page
 
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
+### Logging In
+1. Navigate to the login page
+2. Enter your email and password
+3. Click "Sign In"
+4. You'll be redirected to the dashboard
 
-3. **Set up environment variables**:
-   Create a `.env` file in the root directory with the following content:
-   ```env
-   DATABASE_URL=file:./db/custom.db
-   NEXTAUTH_SECRET=your-super-secret-key-here
-   NEXTAUTH_URL=http://localhost:3000
-   ```
+### Accessing Protected Routes
+- The dashboard is protected and requires authentication
+- Unauthenticated users will be redirected to the login page
+- Sessions are managed automatically by NextAuth.js
 
-4. **Set up the database**:
-   ```bash
-   npm run db:push
-   ```
+## Configuration
 
-5. **Start the development server**:
-   ```bash
-   npm run dev
-   ```
+### Environment Variables
+- `DATABASE_URL`: Path to your SQLite database file
+- `NEXTAUTH_SECRET`: Secret key for JWT tokens
+- `NEXTAUTH_URL`: URL of your application
 
-6. **Open your browser**:
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
-## API Routes
-
-### POST `/api/auth/register`
-Register a new user account.
-
-**Request Body:**
-```json
-{
-  "email": "user@example.com",
-  "password": "password123",
-  "confirmPassword": "password123"
-}
-```
-
-**Response:**
-```json
-{
-  "message": "User created successfully",
-  "user": {
-    "id": "user-id",
-    "email": "user@example.com",
-    "name": null,
-    "createdAt": "2024-01-01T00:00:00.000Z"
-  }
-}
-```
-
-### POST `/api/auth/login`
-Authenticate a user and create a session.
-
-**Request Body:**
-```json
-{
-  "email": "user@example.com",
-  "password": "password123"
-}
-```
-
-**Response:**
-```json
-{
-  "message": "Login successful",
-  "user": {
-    "id": "user-id",
-    "email": "user@example.com",
-    "name": null
-  }
-}
-```
-
-### GET `/api/auth/[...nextauth]`
-NextAuth.js authentication endpoints for session management.
+### Customization
+- Modify the color scheme in `tailwind.config.ts`
+- Update UI components in `src/components/ui/`
+- Customize authentication flow in `src/lib/auth.ts`
+- Modify database schema in `prisma/schema.prisma`
 
 ## Database Schema
 
-The application uses SQLite with the following schema:
-
 ```sql
-CREATE TABLE "User" (
-  "id" TEXT NOT NULL PRIMARY KEY,
-  "email" TEXT NOT NULL UNIQUE,
-  "password" TEXT NOT NULL,
-  "name" TEXT,
-  "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
+User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 ```
-
-## Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run db:push` - Push schema changes to database
-- `npm run db:generate` - Generate Prisma client
-- `npm run db:migrate` - Run database migrations
-- `npm run db:reset` - Reset database
 
 ## Security Features
 
-- **Password Hashing**: All passwords are hashed using bcryptjs with a salt factor of 12
-- **Input Validation**: Client and server-side validation using Zod schemas
-- **Session Management**: Secure JWT-based sessions with NextAuth.js
-- **CSRF Protection**: Built-in CSRF protection with NextAuth.js
-- **Environment Variables**: Sensitive configuration stored in environment variables
+- **Password Hashing**: Uses bcryptjs with 12 salt rounds
+- **Input Validation**: Zod schemas for all form inputs
+- **JWT Security**: Secure token generation and validation
+- **CSRF Protection**: Built-in NextAuth.js CSRF protection
+- **Environment Variables**: Sensitive data stored in environment variables
 
-## Error Handling
+## Development
 
-The application includes comprehensive error handling:
+### Available Scripts
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run db:push      # Push database schema
+npm run db:generate  # Generate Prisma client
+```
 
-- **Form Validation**: Real-time validation feedback on all forms
-- **API Errors**: Proper HTTP status codes and error messages
-- **Database Errors**: Graceful handling of database connection and query errors
-- **Authentication Errors**: Clear feedback for login/registration failures
+### Database Management
+```bash
+# View database
+npx prisma studio
 
-## Styling
+# Reset database
+npx prisma db push --force-reset
 
-The application uses:
-- **Tailwind CSS 4** for utility-first styling
-- **shadcn/ui** components for consistent, accessible UI elements
-- **Responsive Design** with mobile-first approach
-- **Dark Mode Support** through next-themes
+# Create migration
+npx prisma migrate dev
+```
 
 ## Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run tests and linting
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
-This project is open source and available under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Support
+
+If you have any questions or issues, please open an issue on the GitHub repository.
+
+---
+
+Built with ❤️ using Next.js, TypeScript, and Prisma

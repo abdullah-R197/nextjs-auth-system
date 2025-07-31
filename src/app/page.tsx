@@ -37,13 +37,6 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
-          <div className="relative w-24 h-24 md:w-32 md:h-32 mx-auto mb-6">
-            <img
-              src="/logo.svg"
-              alt="Z.ai Logo"
-              className="w-full h-full object-contain"
-            />
-          </div>
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
             Welcome to Auth App
           </h1>
